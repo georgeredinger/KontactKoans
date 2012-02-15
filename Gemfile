@@ -6,4 +6,5 @@ gem 'gdata_19'
 gem 'pry'
 gem 'ruby-debug19'
 gem 'capybara-mechanize'
+gem 'guard-test'
 
