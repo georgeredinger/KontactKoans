@@ -1,3 +1,4 @@
+require 'pry'
 class Contacts
   class Hotmail < Base
     URL                 = "https://login.live.com/login.srf?id=2"
@@ -14,8 +15,11 @@ class Contacts
       old_url = URL
       until forward.nil?
         data, resp, cookies, forward, old_url = get(forward, cookies, old_url) + [forward]
+    if data =~ /ContactMainLight/
+           binding.pry
+        end
+     
       end
-
       postdata =  "PPSX=%s&PwdPad=%s&login=%s&passwd=%s&LoginOptions=2&PPFT=%s" % [
         CGI.escape(data.split("><").grep(/PPSX/).first[/=\S+$/][2..-3]),
         PWDPAD[0...(PWDPAD.length-@password.length)],
@@ -26,11 +30,20 @@ class Contacts
 
       form_url = data.split("><").grep(/form/).first.split[5][8..-2]
       data, resp, cookies, forward = post(form_url, postdata, cookies)
-
+    if data =~ /Contact/
+           binding.pry
+        end
+     
       old_url = form_url
       until cookies =~ /; PPAuth=/ || forward.nil?
         data, resp, cookies, forward, old_url = get(forward, cookies, old_url) + [forward]
-      end
+        if data =~ /Contact/
+           binding.pry
+        end
+       end
+       if data =~ /Contact/
+           binding.pry
+       end
 
       if data.index("The e-mail address or password is incorrect")
         raise AuthenticationError, "Username and password do not match"
@@ -41,8 +54,14 @@ class Contacts
       end
 
       data, resp, cookies, forward = get("http://mail.live.com/mail", cookies)
-      until forward.nil?
+        if data =~ /Contact/
+           binding.pry
+        end
+       until forward.nil?
         data, resp, cookies, forward, old_url = get(forward, cookies, old_url) + [forward]
+        if data =~ /Contact/
+           binding.pry
+        end
       end
 
       @domain = URI.parse(old_url).host
@@ -57,9 +76,13 @@ class Contacts
 
     def contacts(options = {})
       if connected?
+       # href="ContactMainLight.aspx?n=231914905
         url = URI.parse(contact_list_url)
         data, resp, cookies, forward = get( contact_list_url, @cookies )
-
+        if data =~ /Contact/
+           binding.pry
+        end
+ 
         if resp.code_type != Net::HTTPOK
           raise ConnectionError, self.class.const_get(:PROTOCOL_ERROR)
         end

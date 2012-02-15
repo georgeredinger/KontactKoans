@@ -1,3 +1,4 @@
+require 'ruby-debug'
 require "cgi"
 require "net/http"
 require "net/https"
