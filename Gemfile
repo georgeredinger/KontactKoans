@@ -5,6 +5,7 @@ gem 'json'
 gem 'gdata_19'
 gem 'pry'
 gem 'ruby-debug19'
-gem 'capybara-mechanize'
+gem 'capybara-webkit'
+gem 'launchy'
 gem 'guard-test'
 
