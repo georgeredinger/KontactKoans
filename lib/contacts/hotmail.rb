@@ -19,11 +19,21 @@ class Contacts
       fill_in  "login",:with => login
       fill_in "passwd",:with => password
       click_button "Sign in"
-      f=find(:css,'div#m_wh div#c_header.c_hb div.c_hta div.c_hg div.c_h div.c_htr div.c_hleft ul.c_ht li a.uxfa_ml span#c_murc').trigger('mouseover')
-      find_link('Contacts').click
-
-      save_and_open_page
-      #possibly a useragent string problem here useragent string sent by capybara-webkit
+      visit('https://snt104.mail.live.com/?rru=contacts')
+      find_link("continue to Hotmail").click
+      sleep(5)
+      this_page = page
+      this_page.all(:css,'table a').each do |link|
+        if link['href'] =~ /ContactMainLight/
+          link.click
+          sleep(5)
+      #    save_and_open_page
+          binding.pry
+      #    table=find("td")
+      #    name=page.find(:css,"#nameVal")
+      #    email=page.find(:css,"#emailVal")
+        end
+      end
       false
     end
 
