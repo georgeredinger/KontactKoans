@@ -21,17 +21,18 @@ class Contacts
       click_button "Sign in"
       visit('https://snt104.mail.live.com/?rru=contacts')
       find_link("continue to Hotmail").click
+
+      save_and_open_page
+      binding.pry
       sleep(5)
       this_page = page
       this_page.all(:css,'table a').each do |link|
         if link['href'] =~ /ContactMainLight/
           link.click
           sleep(5)
-      #    save_and_open_page
-          binding.pry
-      #    table=find("td")
-      #    name=page.find(:css,"#nameVal")
-      #    email=page.find(:css,"#emailVal")
+          table=find("td")
+          name=page.find(:css,"#nameVal")
+          email=page.find(:css,"#emailVal")
         end
       end
       false
